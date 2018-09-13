@@ -1,0 +1,48 @@
+service: CognitoTestLambdaAtEdge
+
+custom:
+  defaultStage: dev
+  profiles:
+    dev: develop
+    prod: develop
+
+provider:
+  name: aws
+  region: us-east-1
+  stage: ${opt:stage, self:custom.defaultStage}
+  profile: ${self:custom.profiles.${self:provider.stage}}
+  runtime: nodejs8.10
+
+package:
+  individually: true
+  exclude:
+    - src/**
+
+functions:
+  DirectorySlash:
+    handler: src/DirectorySlash/app.lambda_handler
+    memorySize: 128
+    timeout: 30
+    role: LambdaEdgeRole
+    package:
+      include:
+        - src/DirectorySlash/**
+
+resources:
+  Resources:
+    LambdaEdgeRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: /
+        RoleName: LambdaEdgeRole
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+                  - edgelambda.amazonaws.com
+              Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole

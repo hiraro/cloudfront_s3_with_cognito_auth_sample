@@ -1,0 +1,24 @@
+.DS_Store
+node_modules
+/dist
+
+.env
+.env.*
+!.env.sample
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+
+# Since just sample.....
+package-lock.json

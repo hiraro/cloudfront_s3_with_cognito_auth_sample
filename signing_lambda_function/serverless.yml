@@ -1,0 +1,38 @@
+service: CognitoTestSigningLambdaFunction
+
+plugins:
+  - serverless-dotenv-plugin
+
+custom:
+  defaultStage: dev
+  profiles:
+    dev: develop
+    prod: develop
+  dotenv:
+    path: .env.${self:provider.stage}
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: ap-northeast-1
+  stage: ${opt:stage, self:custom.defaultStage}
+  profile: ${self:custom.profiles.${self:provider.stage}}
+
+functions:
+  GetToken:
+    handler: GetToken.handle
+    events:
+      - http:
+          path: token
+          method: get
+          authorizer: aws_iam
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
