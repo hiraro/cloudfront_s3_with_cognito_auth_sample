@@ -36,6 +36,8 @@ module.exports.handle = async (event, context, callback) => {
   try {
     const signed_cookie_obj = generateSignedCookie();
 
+    console.dir(JSON.stringify(signed_cookie_obj));
+
     callback(null, {
       statusCode: 200,
       headers: {

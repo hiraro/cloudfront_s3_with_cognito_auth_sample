@@ -35,9 +35,9 @@ export default {
         await UserUtil.signIn(this.email, this.password);
         const response = await AwsUtil.get(process.env.VUE_APP_API_NAME, `/${process.env.VUE_APP_API_STAGE}/token`);
 
-        this.$cookie.set("CloudFront-Key-Pair-Id", response.data["CloudFront-Key-Pair-Id"]);
-        this.$cookie.set("CloudFront-Policy", response.data["CloudFront-Policy"]);
-        this.$cookie.set("CloudFront-Signature", response.data["CloudFront-Signature"]);
+        this.$cookie.set("CloudFront-Key-Pair-Id", response.data["CloudFront-Key-Pair-Id"], {secure: true});
+        this.$cookie.set("CloudFront-Policy", response.data["CloudFront-Policy"], {secure: true});
+        this.$cookie.set("CloudFront-Signature", response.data["CloudFront-Signature"], {secure: true});
 
         window.location = process.env.VUE_APP_PRIVATE_TOP_URL;
       } catch(e) {
